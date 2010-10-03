@@ -1,0 +1,126 @@
+ReMarkable Quick Reference
+==========================
+Headings:
+	# H1 #
+	## H2 ## (#id)					With optional ID
+	### H3 ###
+	…
+	
+	Heading 2 (#id)					With optional ID
+	===============
+	Heading 3
+	---------
+	
+	&__TOC__;					Table of contents
+
+Horizontal Rule:
+	* * *
+				* * *			White-space allowed before
+
+Inline Formatting:
+	End of line break _
+	Inline¬break
+	
+	*bold*, _italic_, ((side text / legal))
+	~The Lion Witch and the Wardrobe~		Cite
+	
+	Red {vs.|versus} Blue				Abbr with title,
+	For redundancy, use {RAID}			without title
+	
+	{{dfn|definition}}				Definition
+	{{{PAL}|Phase Alternate Line}}			Can include abbr without title
+	
+	This statement is [true]			Insert
+	This statement is ---false---			Delete
+	
+	((legalese))					Side text
+
+Quotations:
+	Inline:
+	
+	He said «turn left here», but she said <<no, it’s definitely right>>.
+	
+	Block:
+
+	|	What is this life if, full of care, _
+	|	We have no time to stand and stare?
+	
+	With citation:
+	
+	|	Here is Edward Bear, coming downstairs now, bump, bump, bump,
+	|	on the back of his head, behind Christopher Robin.
+	|
+	| Winnie-the-Pooh, A.A.Milne
+
+Links:
+	<click here (http://www.google.com)>		Hyperlink
+	<click here (//google.com)>			Abbreviated protocol
+	<click here (^//google.com)>			No-follow
+	<click here (page.html)>			Relative
+	<click here (/downloads)>			Absolute
+	
+	<google.com>					No description
+	<kroccamen@gmail.com>				E-mail
+	
+Images:
+	<"alt" /path/to/image.png>			Image
+	<"alt" /path/to/image.png "title">		With optional title
+	
+	<"alt" thumb.jpg = image.png>			Thumbnail
+
+Figure:
+	fig.	HTML5 figure
+	
+		: figcaption
+
+Lists:
+	•	Bullet
+	*	Asterisk
+	-	Dash
+	+	Plus
+	#	A generic marker
+	1.	A number followed by a dot. Any number can be used
+	1.1.	A legal paragraph number, depths up to 6 are allowed
+	i.	Lower roman numerals
+	I.	Capital roman numerals
+	a.	Lower alpha
+	A.	Upper alpha
+	
+	• (#item1)	Item 1				With optional ID
+	•		Item 2
+	
+	:: Definition term				Definition list
+		Definition description…
+	
+	:: (#id) Definition term			With optional ID
+		Definition description…			Description can be optional
+	
+Preformatted Text:
+	Inline:
+	
+	`samp`, ``code``
+	
+	Block:
+	
+	~~~>
+	I’m _emphasising_ this point *strongly*.
+	<~~~
+	
+	With optional language:
+	
+	~~~ HTML ~~~>
+	I’m <em>emphasising</em> this point <strong>strongly</strong>.
+	<~~~
+
+Autocorrection:
+	5'5" (primes)					5′5″
+	Em--dash					Em—dash
+	1980 -to- 1985 (en-dash)			1980–1985
+	(C), (R)					©, ®
+	^TM / ^tm					™
+	M^elle						superscript
+	3 1/2, 5 1/4, 2 3/4				3½, 5¼, 2¾
+	+/-						±
+	:therefore: / :ergo:				∴
+	...						…
+	

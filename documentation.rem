@@ -1,0 +1,1120 @@
+# ReMarkable! Beta v0.4.3 #
+
+<div id="toc">
+	<h2>Contents</h2>
+	&__TOC__;
+</div>
+
+What ReMarkable Is
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable is a set of text conventions for writing article content in plain text that is translated into the corresponding HTML by the ReMarkable script.
+
+ReMarkable is based on the design of <Markdown (//daringfireball.net/projects/markdown/)> by John Gruber.
+
+The code is inspired by concepts from <PHPMarkdown (//michelf.com/projects/php-markdown/)> by Michel Fortin,
+but is all original code written by <Kroc Camen (mailto:kroccamen@gmail.com)> of <Camen Design (//camendesign.com)>, except for “<toTitleCase (//individed.com/code/to-title-case/)>”, written by <David Gouch (//individed.net)> in Javascript and <ported (//camendesign.com/code/title-case)> to PHP by Kroc Camen.
+
+Use ReMarkable to write online blog / news articles using just plain text, either offline or as part of a {{CMS|content management system}}, and ReMarkable will convert it to tidy, human-readable HTML.
+
+
+What ReMarkable Isn’t
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable should _*never*_ be used to provide a means of public / anonymous users to make comments, or submit any content on a website. ReMarkable is designed for trusted authors who wish to cut down the amount of HTML they have to write so that they may concentrate on their text more, it is _*not*_ designed to solve any trust problems. It is easy to insert JavaScript and other potential security threats into the HTML ReMarkable outputs.
+
+If you want to use ReMarkable in a public or untrusted context, it is up to you to securely filter the output of ReMarkable and to do the necessary security testing yourself. I will not take any responsibility for security breaches or damages caused by use of ReMarkable.
+
+ReMarkable is not for sloppy coders. It outputs only clean, semantic HTML5. You will need to have a good working knowledge of HTML and CSS to best use ReMarkable.
+
+
+Using ReMarkable
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable is a PHP function. To use it, first copy the `ReMarkable` folder to your web app and include the file in your
+code, then call ``reMarkable``, passing the desired text to be transformed into HTML.
+
+~~~ PHP ~~~>
+echo (reMarkable ('I’m _emphasising_ this point *strongly*.'));
+<~~~
+
+Returns:
+
+~~~>
+I’m <em>emphasising</em> this point <strong>strongly</strong>.
+<~~~
+
+Optional Parameters:
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable accepts 4 optional parameters in the format of:
+
+~~~>
+ReMarkable source_text [indent] [wrap] [base_path] [options]
+<~~~
+
+
+#### 1. Indenting Output: ####
+
+The second parameter sets the number of tabs to indent the whole output by (the default value is 0). _
+This would be useful where you are templating HTML and would like to indent the output to match the template.
+
+~~~ PHP ~~~>
+echo (reMarkable ("The quick brown fox¬jumps over the lazy dog.", 2));
+<~~~
+
+Gives:
+
+~~~>
+		<p>
+			The quick brown fox<br />
+			jumps over the lazy dog.
+		</p>
+<~~~
+
+ReMarkable automatically un-indents <`pre` (#pre)> blocks so that the pre content is not rendered indented in the browser.
+
+~~~>
+Here follows a pre-block
+
+~~~>
+The quick brown fox.
+Jumps over the lazy dog.
+<~~~
+
+The end
+<~~~
+
+When used with an indent of 2, looks like this:
+
+~~~>
+		<p>
+			Here follows a pre-block
+		</p>
+		
+		<pre>The quick brown fox.
+Jumps over the lazy dog.</pre>
+		
+		<p>
+			The end
+		</p>
+<~~~
+
+Notice how the second line of the `pre` block is unindented so that the indent would not break the content.
+
+
+#### 2. Word Wrapping: ####
+
+The third optional parameter specifies a character limit to word wrap the output. _
+This defaults to 124 (the viewport size of a Firefox window at 1024×768), set to 0 (or ``false``) to switch word-wrapping off.
+
+Word-wrapping ensures clean and readable HTML. The output of ReMarkable is designed to be human-readable.
+
+
+#### 3. Base Path: ####
+
+ReMarkable will look up an image’s width and height and add those to the HTML output (when using ReMarkable’s <syntax for inserting images (#img)>). In order to do this the ``base_path`` parameter may have to be given so that ReMarkable can find the images relative (or absolute) to the position of the ‘remarkable.php’ file.
+
+For example, imagine that the ‘remarkable.php’ file was in a sub-folder called “scripts”, like so:
+
+~~~>
+Webroot:
+- article.rem
++ scripts
+  + remarkable.php
+  - ...
+
++ images
+  + smiley.png
+  - ...
+<~~~
+
+The relative image URLs in ‘article.rem’ assume that the “images” folder is in the same location—“`images/smiley.png`”, but when ‘remarkable.php’ processes the ‘article.rem’ file, it would try to incorrectly access ‘`/scripts/images/smiley.png`’. The ``base_path`` parameter would have to be “`../`” to tell ‘remarkable.php’ to resolve {``<img>``|image} {src|source} URLs to the webroot—{i.e.|that is}:
+
+~~~ PHP ~~~>
+reMarkable ("content", 0, 124, "../");
+<~~~
+
+
+#### 4. Options: ####
+
+This feature is experimental and likely to change in the future.
+
+Each option is a binary number that you combine together into a single number and supply to the `options` parameter. _
+Combine options using the logical OR “``||``” operator, e.g.:
+
+~~~ PHP ~~~>
+reMarkable (
+	"The quick¬brown fox.", 0, 124, "../",
+	REMARKABLE_NOXHTML || REMARKABLE_TABSPACE_4
+);
+<~~~
+
+The following options are available: _
+(The names, values and availability of these options may likely change in the future)
+
+:: ``REMARKABLE_NOXHTML = 1``
+	By default ReMarkable outputs HTML in XML style “``<br />``” rather than HTML style “``<br>``”.
+	This is because the XHTML style is compatible with both syntaxes, whilst HTML style is incompatible with XHTML.
+	
+	By including this option, ReMarakble will output in HTML instead.
+
+:: ``REMARKABLE_TABSPACE_2 = 2``
+	By default ReMarkable indents output using tab characters; some programmers prefer spaces of different sizes. _
+	Include this option to cause ReMarkable to output tabs as space, 2 per tab.
+
+:: ``REMARKABLE_TABSPACE_4 = 4``
+	Same as above, but outputs tabs as spaces, 4 per tab. Combine both options and ReMarkable will output 8 spaces per
+	tab. This is not 6, as expected, because 2, 4 and 8 are the most common tab sizes, rather than 6.
+	
+	If you want use tab sizes other than 2, 4, or 8, just use this PHP code on the output of ReMarkable:
+	
+	~~~ PHP ~~~>
+	$html = preg_replace (
+		//put the number of spaces you want in the str_repeat command
+		'/^(\t+)/me', 'str_repeat("   ",strlen("$1"))',
+		reMarkable ("source text or variable…")
+	);
+	<~~~
+
+
+Using ReMarkable From the Command Line:
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable can also be called from the command line so that you may use it from other scripting languages or as part of a batch process.
+
+To call ReMarkable, pass PHP the location of the ‘remarkable.php’ file, the optional parameters (if required) and pipe/direct the source text in through `stdin`.
+
+For example, converting a .rem file into HTML:
+
+~~~>
+php path/to/remarkable.php < path/to/file.rem
+<~~~
+
+The result is written to `stdout`.
+
+The same example using parameters:
+
+~~~>
+php path/to/remarkable.php 1 124 ../ 1 < path/to/file.rem
+<~~~
+
+Note: do not use the option names (“``REMARKABLE_NOXHTML``”) in the options parameter, instead provide the numerical sum.
+
+This could be saved to a file, like so:
+
+~~~>
+php remarkable.php < documentation.rem > documentation.html
+<~~~
+
+To pass text inline, pipe it from echo (or any other command that outputs to `stdout`):
+
+~~~>
+echo "the quick¬brown fox" | php remarkable.php
+<~~~
+
+Obviously, be aware of the need to properly escape such inline text.
+
+
+1.	Paragraphs (#p)
+============================================================================================================================
+Every blank line is the start of a new paragraph.
+
+~~~>
+The quick brown fox jumps over the lazy dog.
+
+The cat then sat on the mat.
+<~~~
+
+Which would be converted into the following HTML:
+
+~~~ HTML ~~~>
+<p>
+	The quick brown fox jumps over the lazy dog.
+</p><p>
+	The cat then sat on the mat.
+</p>
+<~~~
+
+1.1	Line Breaks (#br)
+----------------------------------------------------------------------------------------------------------------------------
+As per HTML rules, single line-breaks and other whitespace is ignored. _
+For example, this:
+
+~~~>
+The quick brown fox jumps over the lazy dog.
+The cat sat on the mat.
+<~~~
+
+Would actually display as a single line of text. If you want to force a line-break in the HTML output (“``<br />``”), you may end a line with a space and underscore.
+
+~~~>
+The quick brown fox jumps over the lazy dog. _
+The cat sat on the mat.
+<~~~
+
+Alternatively you can insert a break using the “not” character “`¬`” (‘<kbd>Option+L</kbd>’ on a Mac).
+
+~~~>
+The quick brown fox¬jumps over the lazy dog.
+<~~~
+
+These kinds of break do not have to be at the end of a line, and you can use more than one in a row.
+
+
+2.	Headings (#h)
+============================================================================================================================
+2.1	Headings 1 to 6 (#h-atx)
+----------------------------------------------------------------------------------------------------------------------------
+There are two ways to do headings. _
+The first is atx style:
+
+~~~>
+# H1 #
+## H2 ##
+### H3 ###
+...
+###### H6 ######
+<~~~
+
+Unlike atx the closing hashes are not optional. Headings cannot be indented. _
+Like PHPMarkdown, you can include an ID, like so:
+
+~~~>
+# Title # (#title)
+<~~~
+
+Becomes:
+
+~~~ HTML ~~~>
+<h1 id="title">Title</h1>
+<~~~
+
+2.2	Alternative Headings 2 and 3 (#h-settext)
+----------------------------------------------------------------------------------------------------------------------------
+The second way is using a line of equals or dashes. _
+For example:
+
+~~~>
+Second Level Heading
+====================
+Third Level Heading
+-------------------
+Paragraph…
+<~~~
+
+The line can be any length and doesn’t have to match the length of the text above. _
+The above example produces:
+
+~~~ HTML ~~~>
+<h2>Second Level Heading</h2>
+<h3>Third Level Heading</h3>
+<p>
+	Paragraph
+</p>
+<~~~
+
+A blank line after a heading is optional, paragraphs will still be created.
+
+IDs can be added to these headings similar to before,
+
+~~~>
+Second Level Heading (#title2)
+==============================
+Third Level Heading (#title3)
+-----------------------------
+<~~~
+
+These styles of headings are used for `H2` and `H3` as these are the most common headings. `H1`, though important, is
+usually only used once per article as the title for that article, and in many cases that text is stored as a separate
+database field and isn’t included in the article text for processing.
+
+2.3	Automatic Title Case (#h-case)
+----------------------------------------------------------------------------------------------------------------------------
+All headings will be automatically <Title Cased (//en.wikipedia.org/wiki/Title_case)> by ReMarkable. _
+For example:
+
+~~~>
+## the thin and thick of it ##
+<~~~
+
+Is correctly title-cased as such:
+
+~~~ HTML ~~~>
+<h2>The Thin and Thick of It</h2>
+<~~~
+
+To avoid this behaviour, write a heading using HTML instead of ReMarkable syntax. _
+The PHP code for title casing is also available separately <here (//camendesign.com/code/title-case)>.
+
+2.4	Automatic Table of Contents (#h-toc)
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable can create a table of contents for you. In order to do this, you need to include an ID on each heading you want to be in the table. A special “{TOC|Table of Contents}” marker in the text indicates where the table of contents will be placed. For example:
+
+~~~>
+# Article #
+
+&__TOC__;
+
+## Section 1 ## (#s1)
+### Section 1.1 ### (#s1-1)
+### Section 1.2 ### (#s1-2)
+#### Section 1.2.1 ####
+## Section 2 ## (#s2)
+<~~~
+
+Produces:
+
+~~~ HTML ~~~>
+<h1>Article</h1>
+<ol>
+	<li>
+		<a href="#s1">Section 1</a>
+		<ol>
+			<li><a href="#s1-1">Section 1.1</a></li>
+			<li><a href="#s1-2">Section 1.2</a></li>
+		</ol>
+	</li>
+	<li><a href="#s2">Section 2</a></li>
+</ol>
+
+
+<h2 id="s1">Section 1</h2>
+<h3 id="s1-1">Section 1.1</h3>
+<h3 id="s1-2">Section 1.2</h3>
+<h4>Section 1.2.1</h4>
+
+
+<h2 id="s2">Section 2</h2>
+<~~~
+
+Note that «Section 1.2.1» is not included in the table of contents because it does not have an ID.
+There are two other things to note about the automatic table of contents.
+
+•	Only `H2`-`H6` can be included, `H1`s are ignored as H1 should be your article title,
+	and the document headings are `H2` and below
+•	Headings (even with {ID}s) _before_ the special “{TOC}” marker are not included in the table of contents
+•	Both ReMarkable and HTML headings get included in the list if they have an ID, there is currently no way to
+	have a heading with an ID, but exclude it from the table of contents. This feature may be added at a later date
+
+
+3.	Horizontal Rule / Thematic Break (#hr)
+============================================================================================================================
+An ``<hr />`` element can be inserted using three asterisks separated by spaces, on a line. _
+There can be any amount of white space (or none) before the asterisks, but none after.
+
+~~~>
+* * *
+Or
+		* * *
+<~~~
+
+
+4.	Inline Formatting (#inline)
+============================================================================================================================
+4.1	Italic & Bold (#em)
+----------------------------------------------------------------------------------------------------------------------------
+Italic and bold (emphasis and strong) are rendered by simply placing an underscore or an asterisk either side of the desired
+span of text.
+
+~~~>
+I’m _emphasising_ this point *strongly*.
+<~~~
+
+Yields:
+
+~~~ HTML ~~~>
+I’m <em>emphasising</em> this point <strong>strongly</strong>.
+<~~~
+
+Both emphasis and strong can be combined. _
+They will not work over a real line break in the ReMarkable source; for example, this will not render as bold:
+
+~~~>
+Note that *bold and italic spans cannot work
+over real line-breaks* in the source file
+<~~~
+
+4.2	Abbreviations (#abbr)
+----------------------------------------------------------------------------------------------------------------------------
+For a guide on best practices using definitions read my article on <abbreviations, definitions and citations (//camendesign.com/code/abbr_redux)>. _
+The basic syntax is:
+
+~~~>
+(with title)	Red {vs.|versus} Blue.
+(without title)	For redundancy, use {RAID}.
+<~~~
+
+Giving:
+
+~~~ HTML ~~~>
+(with title)	Red <abbr title="versus">vs.</abbr> Blue.
+(without title)	For redundancy, use <abbr>RAID</abbr>.
+<~~~
+
+There’s no support for ``<acronym>`` because that was removed in HTML5.
+
+4.3	Definitions (#dfn)
+----------------------------------------------------------------------------------------------------------------------------
+The basic syntax is similar to abbreviations but using double curly braces;
+
+~~~>
+{{ASCII|American Standard Code for Information Interchange}}
+<~~~
+
+Definitions also allow abbreviations (without title) inside the first portion [the term] because you should use ``abbr`` to markup initialisms that should be read as written rather than read letter-by-letter. (See <``abbr`` rule 3 (//camendesign.com/code/abbr_redux#abbr-3)> in my article about <abbreviations, definitions and citations (//camendesign.com/code/abbr_redux)>)
+
+~~~>
+{{{ASCII}|American Standard Code for Information Interchange}} =
+<dfn title="American Standard Code for Information Interchange"><abbr>ASCII</abbr></dfn>
+<~~~
+
+4.4	Citations (#cite)
+----------------------------------------------------------------------------------------------------------------------------
+If you’re citing a body of work place tildes either side to denote a citation.
+
+~~~>
+I’ve finished reading ~The Lion, the Witch and the Wardrobe~.
+<~~~
+
+Yields:
+
+~~~ HTML ~~~>
+I’ve finished reading <cite>The Lion, the Witch and the Wardrobe</cite>.
+<~~~
+
+A citation can be a book, a poem, a published piece of writing, a piece of art, a song or album, a film or a TV show. _
+For a guide on best practices using citations read my article on <abbreviations, definitions and citations (//camendesign.com/code/abbr_redux)>.
+
+4.5	Insertions / Deletions (#insdel)
+----------------------------------------------------------------------------------------------------------------------------
+Create ``<ins>`` elements with square brackets, like so:
+
+~~~>
+He [Bill Gates] was actually very charming.
+<~~~
+
+And ``<del>`` elements by wrapping the span of text with triple dashes.
+
+~~~>
+This statement is true. ---This statement is false.---
+<~~~
+
+4.6	Small Text (#small)
+----------------------------------------------------------------------------------------------------------------------------
+Small text represents either side-text or small-print (like legal information).
+
+~~~>
+I don’t know what you’re talking about. ((well I do—ed.))
+<~~~
+
+You can have single line-breaks between the opening, and closing of the small brackets
+
+
+5.	Links (#a)
+============================================================================================================================
+Hyperlinks in ReMarkable look a bit like an HTML hyperlink, with the angle brackets.
+
+~~~>
+<Click here (http://google.com)>
+<~~~
+
+The link description can also contain other <inline ReMarkable formatting (#inline)>. _
+However, the link description cannot contain HTML tags. If you require HTML tags in your link, either place them outside
+the link, or write the hyperlink manually in HTML. Tags can be included inside a link description _only_ if they are inside an <inline code span (#code)>.
+
+~~~>
+<*Click here* (http://google.com)>
+<~~~
+
+«`http://`» can be abbreviated to “`//`”, and the address can be relative if desired.
+
+~~~>
+<search (//google.com)>
+<download (download.html)>
+<home page (/)>
+<~~~
+
+ReMarkable will automatically add ``rel="external"`` to links with external (“http://…”) addresses.
+
+If you link to a file, the mime-type is added for mime-types ReMarkable is aware of.
+
+~~~>
+Download <this (/image.png)>.
+<~~~
+
+Becomes:
+
+~~~ HTML ~~~>
+Download <a href="/image.png" type="image/png">this</a>.
+<~~~
+
+A link to an email address can be provided as well.
+
+~~~>
+<E-mail me (mailto:kroccamen@gmail.com)>
+<~~~
+
+You can add titles (tooltip text) to hyperlinks:
+
+~~~>
+<description (/href) "title text">
+<~~~
+
+If you want the address to _be_ the description, simply include only the address. _
+With this kind of link you can leave out the protocol and “`http://`” or “`mailto:`” will be assumed as appropriate.
+
+~~~>
+Visit <www.camendesign.com>.
+E-mail me <kroccamen@gmail.com>
+<~~~
+
+The protocol (and “`www.`”) will always be stripped in the display description if it is included.
+
+~~~ HTML ~~~>
+Visit <a href="http://www.camendesign.com" rel="external">camendesign.com</a>.
+E-mail me <a href="mailto:kroccamen@gmail.com">kroccamen@gmail.com</a>
+<~~~
+
+If you would like to mark a link as <no-follow (//en.wikipedia.org/wiki/Nofollow)> to search engines, add a
+caret (“^”) before the URL.¬This can be used on all kinds of links, including relative URLs.
+
+~~~>
+<Shameless plug (^http://camendesign.com)>
+<^camendesign.com>
+<~~~
+
+*Note:* If a hyperlink is the _only_ thing on a line, it will _not_ be wrapped in an HTML paragraph element! _
+See the section on <thumbnail images (#a-img)> for details.
+
+
+6.	Quotations (#quote)
+============================================================================================================================
+6.1	Block Quotes (#blockquote)
+----------------------------------------------------------------------------------------------------------------------------
+A block quote is one or more paragraphs with a vertical bar on the left side. _
+The vertical bar character is followed by a tab character and then the text for each line.
+
+~~~>
+|	What is this life if, full of care, _
+|	We have no time to stand and stare?
+<~~~
+
+To include multiple paragraphs, include a quoted blank line. The tab character is optional in this case.
+
+~~~>
+|	No time to stand beneath the boughs, _
+|	And stare as long as sheep and cows:
+|
+|	No time to see, when woods we pass, _
+|	Where squirrels hide their nuts in grass:
+<~~~
+
+The same rules for <paragraphs (#p)> apply within a block quote, line breaks will not be visible in the browser unless <forced (#br)>.
+
+A block quote can be placed inside a block quote.
+
+~~~>
+|	Quote level 1
+|
+|	|	Quote level 2
+<~~~
+
+You can include a <citation (#cite)> for the block quote by writing the first or last line with a single space after the bar, instead of a tab, like so:
+
+~~~>
+|	Here is Edward Bear, coming downstairs now, bump, bump, bump,
+|	on the back of his head, behind Christopher Robin.
+|
+| Winnie-the-Pooh, A.A.Milne
+<~~~
+
+This is translated into:
+
+~~~ HTML ~~~>
+<blockquote>
+	<p>
+		Here is Edward Bear, coming downstairs now, bump, bump, bump,
+		on the back of his head, behind Christopher Robin.
+	</p>
+	<cite>Winnie-the-Pooh, A.A.Milne</cite>
+</blockquote>
+<~~~
+
+6.2	Inline Quotes (#q)
+----------------------------------------------------------------------------------------------------------------------------
+Wrap inline quotations (“``<q>``” element) in either guillemets “`« + »`” (‘<kbd>Alt+\</kbd>’ and ‘<kbd>Alt+Shift+\</kbd>’ on a Mac keyboard) or double angle brackets “`<< + >>`”.
+
+~~~>
+He said «turn left here», but she said <<no, it’s definitely right>>.
+<~~~
+
+
+7.	Images (#img)
+============================================================================================================================
+7.1	Inline (#img-inline)
+----------------------------------------------------------------------------------------------------------------------------
+Whilst you can of course use the normal HTML ``<img>`` tag to insert images, ReMarkable provides a shorthand method of inserting images.
+
+~~~>
+<"alt text goes here" path/to/image.png> or
+<"alt text goes here" path/to/image.png "title goes here">
+<~~~
+
+For example, if you wanted to insert a smiley graphic at the end of a sentence:
+
+~~~>
+And that’s that. <":)" images/smiley.png>
+<~~~
+
+7.2	Block-level images (#img-block)
+----------------------------------------------------------------------------------------------------------------------------
+If an image is the only thing on a line, ReMarkable does not wrap it in a paragraph
+
+~~~>
+<"A screenshot" screenshot.png>
+<~~~
+
+Gives just:
+
+~~~ HTML ~~~>
+<img src="screenshot.png" alt="A screenshot" width="640" height="480" />
+<~~~
+
+Without “``<p>``” tags. ReMarkable does this so that in CSS you can distinguish small inline icons and emotes from larger screenshots and primary images, for example:
+
+~~~ CSS ~~~>
+article * > image	{border: 0; 				/* inline image */}
+article > image		{display: block; margin: 0 auto;	/* block image */}
+<~~~
+
+7.3	Thumbnails (#a-img)
+----------------------------------------------------------------------------------------------------------------------------
+If you want to make a link to an image (such as for thumbnails in a gallery), use this extended image syntax:
+
+~~~>
+<"alt text" /path/to/thumb.jpg = /path/to/image.png>
+<"alt text" /path/to/thumb.jpg = /path/to/image.png "title">	(with optional title text)
+<~~~
+
+The first path (the thumbnail shown on screen) can be any URL either relative, absolute, or external, but must end in a file extension of `png`, `jpg` / `jpeg`, `gif` or `svg` / `svgz`. The second path can be any URL and doesn’t have to be an image file.
+
+This syntax produces one of two results.
+
+1.	Inline, with other text:
+
+	~~~>
+	The quick brown <"Fox emoticon" fox_thumb.jpg = fox.jpg>.
+	<~~~
+	
+	Gives, as expected
+	
+	~~~ HTML ~~~>
+	<p>
+		The quick brown <a href="fox.jpg" type="image/jpeg"><img src="fox_thumb.jpg" width="16" height="16" /></a>.
+	</p>
+	<~~~
+	
+2.	As the only thing on a line:
+	
+	~~~>
+	<"Photo of a dog" dog_thumb.jpg = dog.jpg>
+	<~~~
+	
+	The result is not wrapped in a paragraph, and indented instead:
+	
+	~~~ HTML ~~~>
+	<a href="dog.jpg" type="image/jpeg">
+		<img src="dog_thumb.jpg" alt="Photo of a dog" width="640" height="480" />
+	</a>
+	<~~~
+	
+	This is done primarily for use in HTML5 <figures (#figure)>.
+
+You can separate the alt text, URLs and/or title text with line-breaks if desired (this is also supported for normal images).
+
+~~~>
+<"The quick brown fox jumps over the lazy dog"
+ /the/quick/brown/fox/jumps/over/the/lazy/dog.jpg =
+ /the/quick/brown/fox/jumps/over/the/lazy/dog.png
+ "A quick fox jumps over a lazy dog">
+<~~~
+
+At the moment, this style of syntax breaks if used inside a blockquote.
+
+
+8.	Figure (#figure)
+============================================================================================================================
+ReMarkable provides syntax shorthand for inserting <HTML5 ``<figure>``s (//www.whatwg.org/specs/web-apps/current-work/#the-figure-element)>. _
+This syntax is still experimental at this stage and subject to change.
+
+*Warning:* HTML5 tags such as ``<figure>`` are <not supported in some browsers (//caniuse.com/#feat=html5)> yet. There are <workarounds (//code.google.com/p/html5shiv/)>, but you are expected to handle the CSS / JavaScript implications of using HTML5 elements in unsupported browsers.
+
+A figure is started with “`fig.`”, a tab character and then whatever content, with following lines indented. The figure ends when the indenting stops.
+
+~~~>
+fig.	Twas brillig, and the slithy toves _
+	Did gyre and gimble in the wabe; _
+	All mimsy were the borogoves, _
+	And the mome raths outgrabe.
+<~~~
+
+To include the figure caption start a line with a colon and a space:
+
+~~~>
+fig.	Twas brillig, and the slithy toves _
+	Did gyre and gimble in the wabe; _
+	All mimsy were the borogoves, _
+	And the mome raths outgrabe.
+	
+	: ~Jabberwocky~ (first verse). Lewis Carroll, 1832 -to- 98
+<~~~
+
+The caption can be on the first or last line of the figure.
+
+
+9.	Lists (#li)
+============================================================================================================================
+9.1	Bullet List (#ul)
+----------------------------------------------------------------------------------------------------------------------------
+A bullet list is created by starting a line with an allowed bullet symbol, then a tab character and then the text for the
+list item.
+
+~~~>
+•	A bullet character (‘Option+8’ on a Mac keyboard)
+*	An asterisk
+-	A dash
++	A plus
+<~~~
+
+When blank lines are used between bullet items, the bullet contents will be wrapped in HTML paragraph tags. _
+For example:
+
+~~~>
+•	One
+•	Two
+
+And then,
+
+•	One
+
+•	Two
+<~~~
+
+Would be converted into:
+
+~~~ HTML ~~~>
+<ul>
+	<li>One</li>
+	<li>Two</li>
+</ul>
+<p>
+	And then,
+</p>
+<ul>
+	<li><p>One</p></li>
+	<li><p>Two</p></li>
+</ul>
+<~~~
+
+The significance of this is that each list item is not limited to one line.
+You can have multiple lines and paragraphs on a list item by maintaining the indent,
+even block quotes and other block elements are allowed within lists. For example:
+
+~~~>
+•	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+	incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+	nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+	
+	|	Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+	|	dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+	
+	Culpa qui officia deserunt mollit anim id est laborum.
+
+•	Lorem ipsum.
+<~~~
+
+You can add IDs to list items: (this also applies to numbered lists below) _
+After the bullet point, use a space, then the ID and then the tab character. You can pick and choose which items to give IDs and can use more than 1 tab after the bullet point to align the text if you so want.
+
+~~~>
+• (#item1)	Item 1
+•		Item 2
+<~~~
+
+9.2	Numbered List (#ol)
+----------------------------------------------------------------------------------------------------------------------------
+A numbered list works the same as a bullet list, but with a different set of allowed bullets.
+
+~~~>
+#	A generic marker
+1.	A number followed by a dot. Any number can be used
+1.1.	A legal paragraph number, depths up to 6 are allowed
+i.	Lower roman numerals
+I.	Capital roman numerals
+a.	Lower alpha
+A.	Upper alpha
+<~~~
+
+It should be noted though that all of these number styles are not presented in the outputted HTML.
+They are merely for plain-text readability and are transformed to generic ``<li>`` elements in the HTML.
+It is up to you to use CSS to style them to the matching numbering style.
+
+
+9.3	Nested Lists (#ulol)
+----------------------------------------------------------------------------------------------------------------------------
+Lists can be nested inside each other. Simply maintain the indent of the first, and continue with the second:
+
+~~~>
+•	Item
+	+	Sub Item
+	+	Sub Item
+•	Item
+	1.	Sub Item
+		a.	3rd Level Item
+		b.	3rd Level Item
+	2.	Sub Item
+<~~~
+
+You can do this with or without blank lines between list items as described earlier.
+
+
+9.4	Definition Lists (#dl)
+----------------------------------------------------------------------------------------------------------------------------
+A definition list presents a number of terms, and descriptions of those terms. _
+These are good for lists where each list item has to be named or titled.
+
+Start a definition list with it’s first term by using two colons, a space, and then your term. _
+The definition follows on the next line, always indented one tab character.
+
+~~~>
+:: Definition term
+	Description. This is always indented one tab and can span multiple paragraphs by
+	maintaining indenting, like below.
+	
+	Blockquotes, and all other kinds of lists, can be included in a definition
+	
+	|	This is a blockquote
+	
+	1.	And a list
+	2.	Like this
+	
+:: Second term
+
+:: Third term
+	The description itself is optional.
+
+<~~~
+
+Like lists, definition terms can have HTML IDs:
+
+~~~>
+:: (#id) Definition term
+	Definition description…
+<~~~
+
+
+10.	Preformatted Text / Code (#precode)
+============================================================================================================================
+10.1	Sample Text (#samp)
+----------------------------------------------------------------------------------------------------------------------------
+There may be times when you have to refer to technical information outputted from a computer that may contain symbols and characters that would clash with ReMarkable syntax (for example: log output, file / folder names and paths, emoticons or other computer output).
+
+You can escape such text using back-ticks. ReMarkable will exclude the text within from processing.
+
+~~~>
+The user’s desktop folder is located at `~/Desktop`.
+<~~~
+
+You should use this for any text that generally comes from a computer, even if it’s readable.
+
+~~~>
+It responded cheerfully with «`Syntax Error`».
+<~~~
+
+If you wish to refer to function names, snippets of code and other text from a programming language, see the next heading.
+
+10.2	Inline Code Spans (#code)
+----------------------------------------------------------------------------------------------------------------------------
+To include code examples and other programming language text create inline ``<code>`` spans using double back-ticks.
+
+~~~>
+Using `*emphasis*` will generate ``<em>emphasis</em>``.
+<~~~
+
+Anything inside the code spans will be presented to the user as-is. _
+Single back-ticks can be included in the code span.
+
+~~~>
+Switch to the working directory by using ``cd "`dirname "$0"`"``.
+<~~~
+
+10.3	Preformatted Blocks (#pre)
+----------------------------------------------------------------------------------------------------------------------------
+To include multiple lines, potentially with indentation (such as computer code examples), use a fence block: _
+(Leave a blank line after the fence block for the paragraphs to be created after)
+
+~~~>
+~~~>
+Preformatted text
+	Whitespace like		this	is kept.
+~ReMarkable~ _formatting_ is *not* processed.
+<~~~
+<~~~
+
+All whitespace inside the fence is kept in the HTML output so the user sees the text exactly as it is written.
+
+~~~>
+Preformatted text
+	Whitespace like		this	is kept.
+~ReMarkable~ _formatting_ is *not* processed.
+<~~~
+
+If you are presenting source code, you can specify the language for plain text readability
+
+~~~>
+~~~ HTML ~~~>
+I’m <em>emphasising</em> this point <strong>strongly</strong>.
+<~~~
+<~~~
+
+When a language is specified, “``<pre><code>…</code></pre>``” is used in the output HTML instead of just “``<pre>…</pre>``”.
+
+You can place fences within fences, which is how this documentation has been presented to you.
+
+10.4	Indented Preformatted Blocks (#inpre)
+----------------------------------------------------------------------------------------------------------------------------
+Preformatted blocks can be placed inside lists, definition lists and even block quotes as long as the whole block, code and 
+all is indented correctly.
+
+For example, a preformatted block inside two different lists:
+
+~~~>
+1.	~~~>
+	example...
+	<~~~
+	
+:: Term
+	~~~>
+	example...
+	<~~~
+<~~~
+
+The fence start and end posts must be indented to the list level as well as the code (it will automatically be un-indented
+by one tab character in the output).
+
+However, when a preformatted block is in a block quote you must not put the block quote pipe within the fence posts: _
+(otherwise the pipe will appear inside the preformatted block). This is a bug and may be fixed in future releases.
+
+~~~>
+|	Lorem ipsum dolor sit amet.
+|
+|	~~~>
+	example...
+	<~~~
+|	
+|	Consectetur adipisicing elit.
+<~~~
+
+Recursion is supported, so you can place a preformatted block inside a second-level list item {&c|et cetera}.
+
+
+11.	Auto-Correction (#auto)
+============================================================================================================================
+Writing various typographical marks such as em and en-dashes is easier on some operating systems than others. When writing ReMarkable content on different operating systems ReMarkable provides a number of {ASCII} conventions that are automatically corrected to better unicode or HTML equivalents.
+
+11.1	Primes (#auto-prime)
+----------------------------------------------------------------------------------------------------------------------------
+Primes are used as shorthand for measurements in inches and feet. Inches are shortened to a double-prime, {e.g.|for example,} “A 15" monitor” and feet are shortened to a single-prime “He was 5'5" high”.
+
+These are different unicode characters than quotes or curly quotes and are created whenever next to a number; therefore beware that you may get them unintentionally if quoted text ends in a number. For example: `"Not before 5"` may be incorrectly interpreted as a use of a prime (5 inches). Instead try to work around this with your writing, either adding punctuation or altering the grammar: `"Not before 5 pm"` or `"Not before 5."`.
+
+11.2	“Smart” Quotes (#auto-quotes)
+----------------------------------------------------------------------------------------------------------------------------
+ReMarkable automatically converts straight quotes ‘`" / '`’ into curly quotes “`“ ” / ‘ ’`”. Apostrophes for contractions are also converted into curly versions, for example: “can’t won’t shouldn’t wouldn’t”, as well as contractions omitting starting letters such as “’till” and “’twas” as well as date abbreviations: “The ’90s”.
+
+11.3	Em and En Dashes (#auto-emen)
+----------------------------------------------------------------------------------------------------------------------------
+An <em-dash (//en.wikipedia.org/wiki/Dash#Em_dash)> is represented by two normal dashes: “`--`”, ReMarkable will correct all such instances to a real em-dash: “—”.
+
+An en-dash is used between a range of numbers, dates or times. For example: “1980–1985”, or “July – August”. _
+In {ASCII} write “` -to- `” (spaces either side) and it will be converted into a unicode en-dash.
+
+The spaces are eaten, so that “`1980 -to- 1985`” becomes “1980–1985”. _
+To retain the spaces between the en-dash, double-space.
+
+11.4	Copyright, “All Rights Reserved” and Trade Mark (#auto-circlec)
+----------------------------------------------------------------------------------------------------------------------------
+Easy Copyright “©” and All Rights Reserved “®” symbols can be added using “`(C)`” (or “`(c)`”) and “`(R)`” respectively. The superscript Trade Mark symbol “™” is written “`^TM`” (or “`^tm`”); for example: `“Camen Design^TM`” yields “Camen Design™”.
+
+11.5	Ordinals and Superscript (#auto-ordinals)
+----------------------------------------------------------------------------------------------------------------------------
+“`1st 2nd 3rd 4th`” {&c.|et cetera} are automatically superscripted—“1<sup>st</sup> 2<sup>nd</sup> 3<sup>rd</sup> 4<sup>th</sup>”.
+
+A custom ordinal or superscript can be substituted by using a caret “^” at the end of a word, the rest of the word will then be superscripted. For example:
+
+~~~>
+{M^lle|Mademoiselle}
+<~~~
+
+Gives: “<abbr title="Mademoiselle">M<sup>lle</sup></abbr>”
+
+Only a–z and 0–9 letters are allowed for the superscript portion, no spaces or other symbols or markup.
+
+Another example is displaying numerical powers, the example:
+
+~~~>
+2^10 = 1024
+<~~~
+
+Is converted to: “2<sup>10</sup> = 1024”
+
+11.6	Other Mathematical Symbols (#auto-mathematical)
+----------------------------------------------------------------------------------------------------------------------------
+Half, quarter and three-quarter fraction symbols “ 1/2”, “ 1/4” & “ 3/4” are created by writing “` 1/2`”, “` 1/4`” and “` 3/4`” respectively. _
+The required preceding space before the mark is eaten; {i.e.|that is,} “`3 1/2" Floppy Diskette`” becomes “3 1/2" Floppy Diskette”.
+
+The stacked plus-minus symbol “±” is written “`+/-`”.
+
+The symbol for “therefore”—“:therefore:” can be written either “`:therefore:`” or “`:ergo:`” (the Latin for therefore).
+
+The real multiplication symbol “×” will be used where there a normal lowercase letter ‘X’ is either between two words, or at the end of a word next to a number.
+
+~~~>
+1024 x 768	=> 1024 × 768
+12x6		=> 12×6			for numbers, the space is optional
+8" x 11"	=> 8″ × 11″		but letters / symbols text the space is required
+3x as much	=> 3× as much
+<~~~
+
+11.7	Other Typography (#auto-typography)
+----------------------------------------------------------------------------------------------------------------------------
+Ellipses “`...`” are corrected to unicode “…”.
+
+
+A.	Mixing ReMarkable and HTML (#html)
+============================================================================================================================
+ReMarkable is purposed to write HTML, therefore you can easily intermix ReMarkable syntax and HTML. _
+If ReMarkable doesn’t yet offer a feature in its syntax then you can write in HTML instead:
+
+~~~>
+<td><A table cell with a ReMarkable hyperlink within (#td)></td>
+<~~~
+
+There is only one main rule when it comes to writing large HTML structures, such as tables or lists: don’t leave any blank lines.
+
+To process paragraphs ReMarkable splits the source text by blank lines, meaning if you write an HTML block and leave a blank line in the middle, it will be split into two and break. For example:
+
+~~~ HTML ~~~>
+<!-- this will break because of the blank line inbetween -->
+<table>
+	<tr><th>Price</th></tr>
+	
+	<tr><td>£16.20</td></tr>
+	<tr><td>£36.90</td></tr>
+</table>
+<~~~
+
+Simply remove the blank line and ReMarkable will place the whole HTML block into the page. _
+It is advised to leave a blank line before and after any HTML block such as this.
+
+*Warning:* Do not use HTML ``<samp>``, ``<code>`` or ``<pre>``, use ReMarkable’s syntax instead. This is because ReMarkable syntax within these HTML elements will be processed, potentially breaking your output. This is not easy to solve because of a tricky race-condition where ReMarkable cannot tell which syntax has precedence.
+
+* * *
+
+Comments and Suggestions → <kroccamen@gmail.com>

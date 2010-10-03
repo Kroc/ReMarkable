@@ -1,0 +1,103 @@
+v0.4.3 ()
+NEW:	Large update to documentation, including how to mix HTML and ReMarkable syntax
+FIX:	Changed command line to accept source text from stdin--*will break existing code*--see source for examples
+NEW:	Added options parameter for output preferences, this will expand over time
+NEW:	Titles allowed on links `<description (/href) "title">`
+
+v0.4.2 (22.AUG.10)
+FIX:	Spelling mistake with `<figcaption>`
+FIX:	A hyperlink as the only thing on a line should not be wrapped in a paragraph
+
+v0.4.1 (15.AUG.10)
+NEW:	Added `{{dfn|definition}}` support
+
+v0.4 (12.AUG.10)
+FIX:	Anything allowed in the bookmark portion of hyperlink URLs (this is being abused by more and more sites now)
+FIX:	Changed en-dash syntax to “ -to- ” (requires spaces either side) because it was clashing too much with common
+	writing like “up-to-date” &c.
+FIX:	If a hyperlink is the only thing on a line, it does not get wrapped in a paragraph
+	(useful for block images / figures) This is probably not the right thing to do, and a bit specific to camendesign
+NEW:	Added image linking `<"alt" thumb.jpg = image.png>`
+NEW:	Syntax for HTML5 <figure>
+FIX:	Don’t wrongly exit if calling a PHP script from the command line that then includes ReMarkable
+FIX:	Do not warn if `$_SERVER['argc']` is not present (thanks Andrew Rowls)
+FIX:	Title casing now capitalises correctly after em/en dash
+NEW:	DTs now support IDs. Use `:: (#id) …`
+NEW:	LIs now support IDs. Use `• (#id)` before the tab character (any bullet type allowed),
+	you can now also indent the following lines more to account for an ID bumping the margin to two tabs or more
+NEW:	Added “¾” to autocorrection
+NEW:	Ellipses converted to unicode “...” => “…”
+FIX:	Accented letters Title Casing properly in headings
+FIX:	Blank line between DT & DD no longer causes infinite loop
+FIX:	Syntax language in pre fence can now contain numbers, e.g. “VB6”
+
+v0.3.3 (1.NOV.09)
+FIX:	Default word-wrap changed to 124 to reflect a loss of a character in a Firefox view-source at 1024px wide
+NEW:	Removed small as a block, this was too specific to my site and incompatible with RSS readers
+NEW:	Small allowed across line breaks `((...))`
+NEW:	Citation support for Blockquotes
+FIX:	Citation tildes require word boundaries, so you can use ‘~’ on its own e.g “this ~ that”
+FIX:	Roman numeral lists “iii.” supported. This has long been documented, but broken
+FIX:	Improved bold and italic detection
+
+v0.3.2 (17.JUN.09)
+NEW:	Default ``base_path`` changed to `.`
+FIX:	Segfault in PHP, memory overflow in the regex for PRE blocks
+FIX:	Warnings when PHP ``error_reporting`` switched on
+NEW:	Unicode multiplication symbol “×” for “4x4”, “Increased 3x!” or “6ft x 10ft”. Use “<var>x</var>” to avoid
+NEW:	New line-break convention supported: ‘space-underscore’ at the end of a line, e.g. “The quick brown fox _”
+FIX:	“`...`” now allows double-backtick inside, e.g. “`..``..`” and “````” gives “<samp>``</samp>”
+NEW:	“`...`” is now <samp>, and “``...``” for <code>
+
+v0.3.1 (20.APR.09)
+FIX:	superscript failing on `“10^th”` as the unicode quotes confusing the regex
+NEW:	Hyperlinks / images now support `//` shorthand for `http://`
+NEW:	Markup for images, base_path parameter, see documentation
+FIX:	en-dash `-to-` being replaced in heading ID fragment
+FIX:	No-follow marker in hyperlinks was not actually working!
+
+v0.3.0 (24.MAR.09)
+NEW:	Auto-correction: converts a number of ASCII conventions to nicer unicode. See documentation.
+NEW:	Important: deletion markup has changed to "---...---", to make way for "--" as em-dash.
+NEW:	ReMarkable can be used from the command line
+FIX:	Asterisk bullet points being confused with bold (e.g. “*	*text...*”)
+FIX:	Pre-fence syntax has changed to “~~~>” to distinguish opening/closing fence posts in nested fences
+FIX:	Slashes being added to apostrophes, e.g. “Don\\\'t”
+NEW:	Changed no-follow marker from “!” to “^” because “!” could be a valid relative URL fragment
+FIX:	Placeholder tags were being padded 1 extra because “¡” is 2 bytes, not one
+NEW:	No longer need to have blank line after a pre-fence inside a pre-fence
+FIX:	Placeholder tags were incorrectly being restored (use `array_reverse` instead of `arsort`)
+FIX:	Increased list of block-level elements to not wrap with paragraphs
+
+v0.2.5 (19.JAN.09)
+FIX:	Spaces or tabs on the first line of text are no longer trimmed (e.g. typographic indent)
+NEW:	Automatic generation of a table of contents added, see documentation for details
+FIX:	If blank string given, blank string is returned instead of “<p></p>”
+NEW:	Headings automatically title-cased
+FIX:	Heading HTML tags already present in source text not being removed
+FIX:	Links correctly matched inside inline quote, `<` is no longer supported inside a link description
+
+v0.2.4 (31.DEC.08)
+NEW:	Added testing script to verify output (incomplete)
+FIX:	`**strong**` will now give `<strong>*strong*</strong>` instead of `<strong>*strong</strong>*`
+FIX:	Lines being conjoined even if word-wrapping was off
+FIX:	Correctly indent small blocks as paragraphs, also allow small blocks within lists/blockquotes
+
+v0.2.3.1 (17.DEC.08)
+FIX:	Links not working, introduced in previous version
+
+v0.2.3 (17.DEC.08)
+NEW:	`nofollow` support for links, prefix URLs with “!”
+NEW:	Allow pre blocks within lists, definition lists and blockquotes
+FIX:	Blockquotes/lists not converting if last thing in document
+
+v0.2.2 (14.DEC.08)
+NEW:	Soft-space as newline marker has been removed. Too many problems involved with it being invisible unless your
+	text-editor has white-space on and differentiates spaces from soft-spaces. Instead, use the ‘not’ character “`¬`”.
+	This is located directly on the keyboard on {PC}s and via Alt+L on Mac.
+
+v0.2.1 (11.DEC.08)
+FIX:	Some HTML tidying not working when indent>0
+
+v0.2.0 (11.DEC.08)
+NEW:	Initial Beta release
