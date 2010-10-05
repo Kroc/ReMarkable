@@ -21,10 +21,6 @@ Fixes:
 
 Features:
 ============================================================================================================================
-•	Add title to links
-	
-	<description (/href) "title">
-
 •	Add ID to UL/OL? E.g.:
 
 	(#id)	• (#item1)	…
@@ -35,10 +31,8 @@ Features:
 	• (.class)	…
 
 •	Provide config options (probably an enumerable)
-	-	use spaces in final output 2/4/8
 	-	currency middot (should be off by default)
 	-	pair p tags (and other tags)
-	-	output XHTML or HTML “<br>”
 ?	Superscript ordinals like *, dagger, double dagger, ¹ ² ³ &c. (Footnotes?)
 ?	Standalone superscript, “^1”
 P3	ReMarkable auto-text (like SmartyPants). auto correct ASCII into unicode, other typographic fixes

@@ -1,4 +1,4 @@
-v0.4.3 ()
+v0.4.3 (5.OCT.10)
 NEW:	Large update to documentation, including how to mix HTML and ReMarkable syntax
 FIX:	Changed command line to accept source text from stdin--*will break existing code*--see source for examples
 NEW:	Added options parameter for output preferences, this will expand over time
