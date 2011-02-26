@@ -1,3 +1,9 @@
+v0.4.4 (9.FEB.11)
+FIX:	Applied some changes made by Zengnat: <https://github.com/Zegnat/ReMarkable>
+	* Stop throwing a Notice when no title is specified for a link
+	* Fixes two more Notices that apply to e-mail links
+	* Add support for the HTML5 hgroup element (this is paragraph processing, not syntax support)
+
 v0.4.3 (5.OCT.10)
 NEW:	Large update to documentation, including how to mix HTML and ReMarkable syntax
 FIX:	Changed command line to accept source text from stdin--*will break existing code*--see source for examples

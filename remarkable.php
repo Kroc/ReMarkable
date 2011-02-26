@@ -1,6 +1,6 @@
 <?php //written by kroc camen of camen design
 /* ====================================================================================================================== */
-/* ReMarkable! [βeta] v0.4.3, requires latest PHP 5.2.x and multibyte support
+/* ReMarkable! [βeta] v0.4.4a, requires latest PHP 5.2.x and multibyte support
 
    ideas based on Markdown <daringfireball.net/projects/markdown/> and PHPMarkdown <michelf.com/projects/php-markdown/>.
    file type you should use for ReMarkable files is '.rem' or '.remark'
@@ -200,11 +200,11 @@ function reMarkable (
 			//swap in the HTML
 			$source_text = substr_replace ($source_text,
 				//if a thumbmail, include the link
-				($m[4][0] ? '<a href="'.$m[4][0].'"'.($link ? " type=\"$link\"" : '').'>' : '').
+				(@$m[4][0] ? '<a href="'.$m[4][0].'"'.($link ? " type=\"$link\"" : '').'>' : '').
 				//construct the image tag
-				'<img src="'.$m[3][0].'" alt='.$m[1][0].($m[5][0] ? ' title='.$m[5][0] : '')
+				'<img src="'.$m[3][0].'" alt='.$m[1][0].(@$m[5][0] ? ' title='.$m[5][0] : '')
 				.(isset ($info[0]) ? ' width="'.$info[0].'" height="'.$info[1].'"' : '')."$x>"
-				.($m[4][0] ? '</a>' : ''),
+				.(@$m[4][0] ? '</a>' : ''),
 			//replacement start and length
 			$m[0][1], strlen ($m[0][0]));
 			//go back and find the next image and don’t swap for a placeholder yet (as described above)
