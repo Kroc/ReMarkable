@@ -10,6 +10,10 @@
 
 Fixes:
 ============================================================================================================================
+•	BUG: A bullet list followed immediately by a number list combines into one.
+	Need to detect type of list, and stick to it
+
+•	BUG: << / >> quotes break Blockquote?
 •	“Win9x” causes a multiply sign! “0xFFFFFF” too!
 •	LIs being wrapped too early?
 •	Superscript within cite, and others ~ABC^TM~
