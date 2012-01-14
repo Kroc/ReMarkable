@@ -12,7 +12,7 @@ ReMarkable is a set of text conventions for writing article content in plain tex
 ReMarkable is based on the design of <Markdown (//daringfireball.net/projects/markdown/)> by John Gruber.
 
 The code is inspired by concepts from <PHPMarkdown (//michelf.com/projects/php-markdown/)> by Michel Fortin,
-but is all original code written by <Kroc Camen (mailto:kroccamen@gmail.com)> of <Camen Design (//camendesign.com)>, except for “<toTitleCase (//individed.com/code/to-title-case/)>”, written by <David Gouch (//individed.net)> in Javascript and <ported (//camendesign.com/code/title-case)> to PHP by Kroc Camen.
+but is all original code written by <Kroc Camen (mailto:kroc@camendesign.com)> of <Camen Design (//camendesign.com)>, except for “<toTitleCase (//individed.com/code/to-title-case/)>”, written by <David Gouch (//individed.net)> in Javascript and <ported (//camendesign.com/code/title-case)> to PHP by Kroc Camen.
 
 Use ReMarkable to write online blog / news articles using just plain text, either offline or as part of a {{CMS|content management system}}, and ReMarkable will convert it to tidy, human-readable HTML.
 
@@ -547,7 +547,7 @@ Download <a href="/image.png" type="image/png">this</a>.
 A link to an email address can be provided as well.
 
 ~~~>
-<E-mail me (mailto:kroccamen@gmail.com)>
+<E-mail me (mailto:kroc@camendesign.com)>
 <~~~
 
 You can add titles (tooltip text) to hyperlinks:
@@ -561,14 +561,14 @@ With this kind of link you can leave out the protocol and “`http://`” or “
 
 ~~~>
 Visit <www.camendesign.com>.
-E-mail me <kroccamen@gmail.com>
+E-mail me <kroc@camendesign.com>
 <~~~
 
 The protocol (and “`www.`”) will always be stripped in the display description if it is included.
 
 ~~~ HTML ~~~>
 Visit <a href="http://www.camendesign.com" rel="external">camendesign.com</a>.
-E-mail me <a href="mailto:kroccamen@gmail.com">kroccamen@gmail.com</a>
+E-mail me <a href="mailto:kroc@camendesign.com">kroc@camendesign.com</a>
 <~~~
 
 If you would like to mark a link as <no-follow (//en.wikipedia.org/wiki/Nofollow)> to search engines, add a
@@ -1117,4 +1117,4 @@ It is advised to leave a blank line before and after any HTML block such as this
 
 * * *
 
-Comments and Suggestions → <kroccamen@gmail.com>
+Comments and Suggestions → <kroc@camendesign.com>
