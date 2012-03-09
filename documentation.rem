@@ -137,12 +137,12 @@ reMarkable ("content", 0, 124, "../");
 This feature is experimental and likely to change in the future.
 
 Each option is a binary number that you combine together into a single number and supply to the `options` parameter. _
-Combine options using the logical OR “``||``” operator, e.g.:
+Combine options using the bitwise OR “``|``” operator, e.g.:
 
 ~~~ PHP ~~~>
 reMarkable (
 	"The quick¬brown fox.", 0, 124, "../",
-	REMARKABLE_NOXHTML || REMARKABLE_TABSPACE_4
+	REMARKABLE_NOXHTML | REMARKABLE_TABSPACE_4
 );
 <~~~
 
@@ -1117,4 +1117,4 @@ It is advised to leave a blank line before and after any HTML block such as this
 
 * * *
 
-Comments and Suggestions → <kroc@camendesign.com>
+Comments and Suggestions → <kroccamen@gmail.com>
