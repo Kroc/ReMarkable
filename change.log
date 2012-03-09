@@ -1,3 +1,7 @@
+v0.4.5 (14.JAN.12)
+FIX:	Incorrect text-escaping in e-mode regexes caused "$" to break text in table of contents
+	(essentially some text was being interpreted as PHP code)
+
 v0.4.4 (9.FEB.11)
 FIX:	Applied some changes made by Zengnat: <https://github.com/Zegnat/ReMarkable>
 	* Stop throwing a Notice when no title is specified for a link

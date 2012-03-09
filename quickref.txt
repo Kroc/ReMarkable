@@ -60,7 +60,7 @@ Links:
 	<click here (/downloads)>			Absolute
 	
 	<google.com>					No description
-	<kroccamen@gmail.com>				E-mail
+	<kroc@camendesign.com>				E-mail
 	
 Images:
 	<"alt" /path/to/image.png>			Image

@@ -1,11 +1,11 @@
 <?php //written by kroc camen of camen design
 /* ====================================================================================================================== */
-/* ReMarkable! [βeta] v0.4.4a, requires latest PHP 5.2.x and multibyte support
+/* ReMarkable! [βeta] v0.4.5, requires latest PHP 5.2.x and multibyte support
 
    ideas based on Markdown <daringfireball.net/projects/markdown/> and PHPMarkdown <michelf.com/projects/php-markdown/>.
    file type you should use for ReMarkable files is '.rem' or '.remark'
 
-   bugs / suggestions → kroccamen@gmail.com
+   bugs / suggestions → kroc@camendesign.com
 */
 /* --- options ---------------------------------------------------------------------------------------------------------- */
 //combine these options using an OR `|` operator and supply to the options parameter
@@ -132,7 +132,7 @@ function reMarkable (
 		//	<Click here (blog/hello)>.		relative, with description
 		//	<description (/href) "title">		with title
 		//	Visit <camendesign.com>			without description. protocol is optional in this style
-		//	E-mail me: <kroccamen@gmail.com>	e-mail address, without description
+		//	E-mail me: <kroc@camendesign.com>	e-mail address, without description
 		'A'	=> '/<(?:([^<>]+?)[ ]\()?				# $1 = optional description
 		(\^)?								# $2 = optional no-follow marker
 		(								# $3 = whole URL
@@ -340,8 +340,8 @@ function reMarkable (
 		/*<em>*/	'<em>$1</em>',		/*<strong>*/	'<strong>$1</strong>',
 		/*<del>*/	'<del>$1</del>',	/*<ins>*/	'<ins>$1</ins>',
 		/*<cite>*/	'<cite>$1</cite>', 	/*<q>*/		'<q>$2</q>',
-		/*<dfn>*/	'"<dfn".("$2"?" title=\"".stripslashes("$2")."\"":"").">".stripslashes("$1")."</dfn>"',
-		/*<abbr>*/	'"<abbr".("$2"?" title=\"".stripslashes("$2")."\"":"").">".stripslashes("$1")."</abbr>"',
+		/*<dfn>*/	'"<dfn".(\'$2\'?" title=\"".stripslashes(\'$2\')."\"":"").">".stripslashes(\'$1\')."</dfn>"',
+		/*<abbr>*/	'"<abbr".(\'$2\'?" title=\"".stripslashes(\'$2\')."\"":"").">".stripslashes(\'$1\')."</abbr>"',
 		/*<small>*/	'<small>$1</small>'
 		
 	), $source_text);
@@ -457,19 +457,19 @@ function reMarkable (
 		'/^(\xA1A%*!)(\xA1IMG%*!)(\xA1A%!)$/mu'
 	), array (
 		/*«whitespace»*/"\n",
-		/*<blockquote>*/'"\n<blockquote>\n".(strlen("$1")?"<cite>".stripslashes("$1")."</cite>\n":"")'.
-				'."\n".preg_replace("/^\|\\t?/m","",stripslashes("$2\n"))'.
-				'.(strlen("$3")?"<cite>".stripslashes("$3")."</cite>\n":"")."</blockquote>\n\n"',
-		/*<ul>/<ol>*/	'"\n<".("$2"?"u":"o")."l>\n\n".trim(stripslashes("$1"))."\n\n</".("$2"?"u":"o")."l>\n\n"',
-		/*<li>*/	'"<li".("$3"?" id=\"$3\"":"").">$1$5$6"'.
-				'.preg_replace("/^\\t/m","",trim(stripslashes("$4")))."$1$5$6</li>\n\n"',
-		/*<dl>*/	'"<dl>\n\n".trim(stripslashes("$0"))."\n</dl>\n\n"',
-		/*<dt>/</dd>*/	'"<dt".("$1"?" id=\"$1\"":"").">".stripslashes("$2")."</dt>\n\n"'.
+		/*<blockquote>*/'"\n<blockquote>\n".(strlen(\'$1\')?"<cite>".stripslashes(\'$1\')."</cite>\n":"")'.
+				'."\n".preg_replace("/^\|\\t?/m","",stripslashes(\'$2\'."\n"))'.
+				'.(strlen(\'$3\')?"<cite>".stripslashes(\'$3\')."</cite>\n":"")."</blockquote>\n\n"',
+		/*<ul>/<ol>*/	'"\n<".(\'$2\'?"u":"o")."l>\n\n".trim(stripslashes(\'$1\'))."\n\n</".(\'$2\'?"u":"o")."l>\n\n"',
+		/*<li>*/	'"<li".(\'$3\'?\' id="$3"\':"").\'>$1$5$6\''.
+				'.preg_replace("/^\\t/m","",trim(stripslashes(\'$4\'))).\'$1$5$6</li>\'."\n\n"',
+		/*<dl>*/	'"<dl>\n\n".trim(stripslashes(\'$0\'))."\n</dl>\n\n"',
+		/*<dt>/</dd>*/	'"<dt".(\'$1\'?\' id="$1"\':"").">".stripslashes(\'$2\')."</dt>\n\n"'.
 				'.("$3"?"<dd>\n".stripslashes("$4")'.
-				'.(preg_replace("/^\\t/m","",stripslashes("$3"))).stripslashes("$4")."\n</dd>\n\n":"")',
-		/*<figure>*/	'"<figure>\n".("$1"?"<figcaption>".trim(stripslashes("$1"))."</figcaption>\n":"")."\n"'.
-				'.preg_replace("/^\\t/m","",stripslashes("$2"))'.
-				'.("$3"?"<figcaption>".trim(stripslashes("$3"))."</figcaption>\n":"\n")."</figure>\n\n"',
+				'.(preg_replace("/^\\t/m","",stripslashes(\'$3\'))).stripslashes(\'$4\')."\n</dd>\n\n":"")',
+		/*<figure>*/	'"<figure>\n".(\'$1\'?"<figcaption>".trim(stripslashes(\'$1\'))."</figcaption>\n":"")."\n"'.
+				'.preg_replace("/^\\t/m","",stripslashes(\'$2\'))'.
+				'.(\'$3\'?"<figcaption>".trim(stripslashes(\'$3\'))."</figcaption>\n":"\n")."</figure>\n\n"',
 		/*<a><img></a>*/"$1\n$2\n$3"
 		
 	), $source_text, -1, $continue);
@@ -506,9 +506,9 @@ function reMarkable (
 				(a|img)
 			|	# elements that start a line that should not be wrapped
 				(?:article|aside|audio|blockquote|canvas|caption|col|colgroup|dialog|div|d[ltd]|embed
-				  |fieldset|figure|figcaption|footer|form|h[1-6r]|header|hgroup|input|label|legend|li|nav
-				  |noscript|object|[ou]l|optgroup|option|p|param|pre|script|section|select|source|table
-				  |t(?:body|foot|head)|t[dhr]|textarea|video
+				  |fieldset|figure|figcaption|footer|form|h[1-6r]|header|hgroup|iframe|input|label|legend
+				  |li|nav|noscript|object|[ou]l|optgroup|option|p|param|pre|script|section|select|source
+				  |table|t(?:body|foot|head)|t[dhr]|textarea|video
 				# don’t wrap HTML comments or TOC markers
 				  |\#
 				)

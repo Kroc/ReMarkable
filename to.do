@@ -25,6 +25,7 @@ Fixes:
 
 Features:
 ============================================================================================================================
+•	Use <footer> in Blockquote for citation? <html5doctor.com/blockquote-q-cite/>
 •	Add ID to UL/OL? E.g.:
 
 	(#id)	• (#item1)	…
