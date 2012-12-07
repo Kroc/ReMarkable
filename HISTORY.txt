@@ -1,0 +1,122 @@
+v5	07.DEC.12
+*	Superscript can now be done without a preceeding word, e.g. `^TM`
+*	Reformatted the project structure
+	-	Moved "change.log" to HISTORY.txt
+	-	Added LICENCE.txt and licence headers
+	-	Added breif README.txt
+	-	Removed the testing and build script (will replace in the future)
+	-	Moved to simpler versioning akin to NoNonsense Forum
+	
+v.4.5	14.JAN.12
+*	Incorrect text-escaping in e-mode regexes caused "$" to break text in table of contents
+	(essentially some text was being interpreted as PHP code)
+
+v.4.4	9.FEB.11
+*	Applied some changes made by Zegnat: <https://github.com/Zegnat/ReMarkable>
+	-	Stop throwing a Notice when no title is specified for a link
+	-	Fixes two more Notices that apply to e-mail links
+	-	Add support for the HTML5 `hgroup` element (this is paragraph processing, not syntax support)
+
+v.4.3	5.OCT.10
+*	Large update to documentation, including how to mix HTML and ReMarkable syntax
+*	Changed command line to accept source text from stdin--*will break existing code*--see source for examples
+*	Added options parameter for output preferences, this will expand over time
+*	Titles allowed on links `<description (/href) "title">`
+
+v.4.2	22.AUG.10
+*	Spelling mistake with `<figcaption>`
+*	A hyperlink as the only thing on a line should not be wrapped in a paragraph
+
+v.4.1 15.AUG.10
+*	Added `{{dfn|definition}}` support
+
+v.4	12.AUG.10
+*	Anything allowed in the bookmark portion of hyperlink URLs (this is being abused by more and more sites now)
+*	Changed en-dash syntax to “ -to- ” (requires spaces either side) because it was clashing too much with common
+	writing like “up-to-date” &c.
+*	If a hyperlink is the only thing on a line, it does not get wrapped in a paragraph
+	(useful for block images / figures) This is probably not the right thing to do, and a bit specific to camendesign
+*	Added image linking `<"alt" thumb.jpg = image.png>`
+*	Syntax for HTML5 <figure>
+*	Don’t wrongly exit if calling a PHP script from the command line that then includes ReMarkable
+*	Do not warn if `$_SERVER['argc']` is not present (thanks Andrew Rowls)
+*	Title casing now capitalises correctly after em/en dash
+*	DTs now support IDs. Use `:: (#id) …`
+*	LIs now support IDs. Use `• (#id)` before the tab character (any bullet type allowed),
+	you can now also indent the following lines more to account for an ID bumping the margin to two tabs or more
+*	Added “¾” to autocorrection
+*	Ellipses converted to unicode “...” => “…”
+*	Accented letters Title Casing properly in headings
+*	Blank line between DT & DD no longer causes infinite loop
+*	Syntax language in pre fence can now contain numbers, e.g. “VB6”
+
+v.3.3	1.NOV.09
+*	Default word-wrap changed to 124 to reflect a loss of a character in a Firefox view-source at 1024px wide
+*	Removed small as a block, this was too specific to my site and incompatible with RSS readers
+*	Small allowed across line breaks `((...))`
+*	Citation support for Blockquotes
+*	Citation tildes require word boundaries, so you can use ‘~’ on its own e.g “this ~ that”
+*	Roman numeral lists “iii.” supported. This has long been documented, but broken
+*	Improved bold and italic detection
+
+v.3.2	17.JUN.09
+*	Default ``base_path`` changed to `.`
+*	Segfault in PHP, memory overflow in the regex for PRE blocks
+*	Warnings when PHP ``error_reporting`` switched on
+*	Unicode multiplication symbol “×” for “4x4”, “Increased 3x!” or “6ft x 10ft”. Use “<var>x</var>” to avoid
+*	New line-break convention supported: ‘space-underscore’ at the end of a line, e.g. “The quick brown fox _”
+*	“`...`” now allows double-backtick inside, e.g. “`..``..`” and “````” gives “<samp>``</samp>”
+*	“`...`” is now <samp>, and “``...``” for <code>
+
+v.3.1	20.APR.09
+*	superscript failing on `“10^th”` as the unicode quotes confusing the regex
+*	Hyperlinks / images now support `//` shorthand for `http://`
+*	Markup for images, base_path parameter, see documentation
+*	en-dash `-to-` being replaced in heading ID fragment
+*	No-follow marker in hyperlinks was not actually working!
+
+v.3.0	24.MAR.09
+*	Auto-correction: converts a number of ASCII conventions to nicer unicode. See documentation.
+*	Important: deletion markup has changed to "---...---", to make way for "--" as em-dash.
+*	ReMarkable can be used from the command line
+*	Asterisk bullet points being confused with bold (e.g. “*	*text...*”)
+*	Pre-fence syntax has changed to “~~~>” to distinguish opening/closing fence posts in nested fences
+*	Slashes being added to apostrophes, e.g. “Don\\\'t”
+*	Changed no-follow marker from “!” to “^” because “!” could be a valid relative URL fragment
+*	Placeholder tags were being padded 1 extra because “¡” is 2 bytes, not one
+*	No longer need to have blank line after a pre-fence inside a pre-fence
+*	Placeholder tags were incorrectly being restored (use `array_reverse` instead of `arsort`)
+*	Increased list of block-level elements to not wrap with paragraphs
+
+v.2.5	19.JAN.09
+*	Spaces or tabs on the first line of text are no longer trimmed (e.g. typographic indent)
+*	Automatic generation of a table of contents added, see documentation for details
+*	If blank string given, blank string is returned instead of “<p></p>”
+*	Headings automatically title-cased
+*	Heading HTML tags already present in source text not being removed
+*	Links correctly matched inside inline quote, `<` is no longer supported inside a link description
+
+v.2.4	31.DEC.08
+*	Added testing script to verify output (incomplete)
+*	`**strong**` will now give `<strong>*strong*</strong>` instead of `<strong>*strong</strong>*`
+*	Lines being conjoined even if word-wrapping was off
+*	Correctly indent small blocks as paragraphs, also allow small blocks within lists/blockquotes
+
+v.2.3.1	17.DEC.08
+*	Links not working, introduced in previous version
+
+v.2.3	17.DEC.08
+*	`nofollow` support for links, prefix URLs with “!”
+*	Allow pre blocks within lists, definition lists and blockquotes
+*	Blockquotes/lists not converting if last thing in document
+
+v.2.2	14.DEC.08
+*	Soft-space as newline marker has been removed. Too many problems involved with it being invisible unless your
+	text-editor has white-space on and differentiates spaces from soft-spaces. Instead, use the ‘not’ character “`¬`”.
+	This is located directly on the keyboard on {PC}s and via Alt+L on Mac.
+
+v.2.1	11.DEC.08
+*	Some HTML tidying not working when indent>0
+
+v.2	11.DEC.08
+*	Initial Beta release

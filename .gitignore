@@ -1,1 +1,11 @@
-/documentation.html
+*
+!.gitignore
+
+!remarkable.php
+
+!documentation.rem
+!quickref.txt
+
+!README.txt
+!LICENCE.txt
+!HISTORY.txt

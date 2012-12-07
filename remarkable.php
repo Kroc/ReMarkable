@@ -1,14 +1,15 @@
-<?php //written by kroc camen of camen design
+<?php
 /* ====================================================================================================================== */
-/* ReMarkable! [βeta] v0.4.5, requires latest PHP 5.2.x and multibyte support
-
-   ideas based on Markdown <daringfireball.net/projects/markdown/> and PHPMarkdown <michelf.com/projects/php-markdown/>.
-   file type you should use for ReMarkable files is '.rem' or '.remark'
-
+/* ReMarkable v5 © Copyright (CC-BY) Kroc Camen 2012
+   licenced under Creative Commons Attribution 3.0 <creativecommons.org/licenses/by/3.0/deed.en_GB>
+   you may do whatever you want to this code as long as you give credit to Kroc Camen, <camendesign.com>
+*//*
+   ideas based on Markdown <daringfireball.net/projects/markdown/> and PHPMarkdown <michelf.com/projects/php-markdown/>
    bugs / suggestions → kroc@camendesign.com
 */
+
 /* --- options ---------------------------------------------------------------------------------------------------------- */
-//combine these options using an OR `|` operand and supply to the options parameter
+//combine these options using an OR `||` operand and supply to the options parameter
 define ('REMARKABLE_NOXHTML',		1);	//output HTML “<br>” instead of XHTML (deafult) “<br />”
 define ('REMARKABLE_TABSPACE_2',	2);	//output tabs as spaces, 2 per tab
 define ('REMARKABLE_TABSPACE_4',	4);	//output tabs as spaces, 4 per tab. combine with above for 8 per tab
