@@ -285,7 +285,7 @@ function reMarkable (
 		'/\^tm/i'			=> '™',		'/(?<!\.)\.{3}(?!\.)/'		=> '…',
 		//ordinals / superscript
 		'/(\d)(st|nd|rd|th)/'		=> '$1<sup>$2</sup>',
-		'/([\w])\^([\w]+)/u'		=> '$1<sup>$2</sup>',
+		'/([\w])?\^([\w]+)/u'		=> '$1<sup>$2</sup>',
 		//multiplication
 		'/([\d ])x( ?\d+)?\b/'		=> '$1×$2',
 		//fractions

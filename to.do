@@ -10,8 +10,14 @@
 
 Fixes:
 ============================================================================================================================
-•	BUG: A bullet list followed immediately by a number list combines into one.
-	Need to detect type of list, and stick to it
+•	BUG: LIs that end in a hyperlink do not include Ps: E.g.
+
+	• <test>
+	
+	• why no space!?
+
+•	improve links to accept anything in the URL part, and encode on output; e.g. (spaces and unicode)
+	`<drive from Bratislava to Lučenec (https://maps.google.co.uk/maps?q=Bratislava to Lučenec)>`
 
 •	BUG: << / >> quotes break Blockquote?
 •	“Win9x” causes a multiply sign! “0xFFFFFF” too!
@@ -26,6 +32,7 @@ Fixes:
 Features:
 ============================================================================================================================
 •	Use <footer> in Blockquote for citation? <html5doctor.com/blockquote-q-cite/>
+•	List type is back! http://html5doctor.com/ol-element-attributes/
 •	Add ID to UL/OL? E.g.:
 
 	(#id)	• (#item1)	…
