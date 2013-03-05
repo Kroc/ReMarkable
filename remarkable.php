@@ -428,7 +428,7 @@ function reMarkable (
 	/* [5] blocks - lists / blockquotes
 	   ============================================================================================================== */
 	//see documentation (or read regex) for full list of supported bullet types. note that this has capturing groups
-	$bullet = '(?:([\x{2022}*+-])|(?-i:[a-z]\.|[ivxlcdm]+\.|#|(?:\d+\.){1,6}))(?: \(#([0-9a-z_-]+)\))?';
+	$bullet = '(?:([\x{2022}*+-])|(?-i:[a-zA-Z]\.|[ivxlcdm]+\.|#|(?:\d+\.){1,6}))(?: \(#([0-9a-z_-]+)\))?';
 	
 	//capture, convert and unindent lists and blockquotes, recursively: (I hope you’re fluent in regex)
 	do $source_text = preg_replace (array (
