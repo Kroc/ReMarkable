@@ -141,8 +141,8 @@ function reMarkable (
 			(?:www\.)?						# ignore www
 			(							# $5 = friendly URL (no protocol)
 				([a-z0-9._%+-]+@[a-z0-9.-]+)?			# $6 = email address
-				(?(4)[a-z0-9.-]{2,}(?:\.[a-z]{2,4})+   |	# domain name (mandatory if protocol given)
-				 (?(1)|[a-z0-9.-]{2,}(?:\.[a-z]{2,4})+))	# domain name (mandatory if no description)
+				(?(4)[a-z0-9.-]{1,}(?:\.[a-z]{2,4})+   |	# domain name (mandatory if protocol given)
+				 (?(1)|[a-z0-9.-]{1,}(?:\.[a-z]{2,4})+))	# domain name (mandatory if no description)
 				(						# $7 = folders and filename, relative URL
 					(?(4)\/|(?(1)|\/))			# slash required after full domain
 					[\/a-z0-9_!~*\'().;?:@&=+$,%-]*		# folders and filename
