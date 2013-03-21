@@ -222,7 +222,7 @@ function reMarkable (
 					//add deafult protocol if no link description and protocol was omitted
 					.(!$m[1][0] && !$m[4][0]
 					? (@$m[6][0] ? 'mailto:' : 'http://')
-					: ($m[4][0] == '//' ? 'http:' : '')).
+					: ($m[4][0] == '//' ? 'http:' : (@$m[6][0] ? 'mailto:' : ''))).
 					//encode URLs (`&amp;`)
 					preg_replace ('/&(?!amp;)/i', '&amp;', $m[3][0])
 				.'"'.
