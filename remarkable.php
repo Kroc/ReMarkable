@@ -196,7 +196,9 @@ function reMarkable (
 			//thumbnail syntax that generates “<a><img /></a>” which is detected later and split and indented
 			case 'IMG': /* ---------------------------------------------------------------------------------- */
 			//get the image size for width / height attributes on the img tag
-			$info = getimagesize ($base_path.$m[3][0]);
+			$info = ( (bool) strpos($m[3][0], '://') === FALSE)
+                ? getimagesize ($base_path.$m[3][0])
+                : getimagesize($m[3][0]);
 			$link = @$mimes[pathinfo ($m[4][0], PATHINFO_EXTENSION)];
 			//swap in the HTML
 			$source_text = substr_replace ($source_text,
