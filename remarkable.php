@@ -48,7 +48,7 @@ function reMarkable (
 	$source_text = trim (rtrim (preg_replace ('/\r\n?/', "\n", $source_text)), "\n")."\n\n";
 	
 	//will we be using the X in XHTML?
-	$x = ($options && REMARKABLE_NOXHTML) ? '' : ' /';
+	$x = ($options & REMARKABLE_NOXHTML) ? '' : ' /';
 	
 	
 	/* list of mime-types for hyperlinks pointing directly to a file:
