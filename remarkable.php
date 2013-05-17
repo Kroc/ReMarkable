@@ -9,7 +9,7 @@
 */
 
 /* --- options ---------------------------------------------------------------------------------------------------------- */
-//combine these options using an OR `||` operand and supply to the options parameter
+//combine these options using an OR `|` operator and supply to the options parameter
 define ('REMARKABLE_NOXHTML',		1);	//output HTML “<br>” instead of XHTML (deafult) “<br />”
 define ('REMARKABLE_TABSPACE_2',	2);	//output tabs as spaces, 2 per tab
 define ('REMARKABLE_TABSPACE_4',	4);	//output tabs as spaces, 4 per tab. combine with above for 8 per tab
@@ -619,11 +619,11 @@ function reMarkable (
 	}
 	
 	//apply tab output preference
-	if ($options && (REMARKABLE_TABSPACE_2 || REMARKABLE_TABSPACE_4)) $source_text = preg_replace ('/^(\t+)/me', (
+	if ($options & (REMARKABLE_TABSPACE_2 | REMARKABLE_TABSPACE_4)) $source_text = preg_replace ('/^(\t+)/me', (
 		//8, 4, or 2 spaces?
 		'str_repeat("'.(
-			!($options xor (REMARKABLE_TABSPACE_2 || REMARKABLE_TABSPACE_4))
-			? '        ' : ($options && REMARKABLE_TABSPACE_4 ? '    ' : '  ')
+			!($options ^ (REMARKABLE_TABSPACE_2 | REMARKABLE_TABSPACE_4))
+			? '        ' : ($options & REMARKABLE_TABSPACE_4 ? '    ' : '  ')
 		).'",strlen("$1"))'
 	), $source_text);
 	
