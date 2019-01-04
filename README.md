@@ -1,4 +1,4 @@
-ReMarkable v5 © Copyright (CC-BY) Kroc Camen 2012
+ReMarkable (C) Copyright Kroc Camen 2008-2019
 ========================================================================
 ReMarkable is a Markdown-like syntax and PHP script for writing website
 articles in plain text.

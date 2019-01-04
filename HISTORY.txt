@@ -1,9 +1,15 @@
+v6	04.JAN.19
+*	License changed to BSD 2-Clause
+*	Fixed to work on PHP7
+*	the core function name `reMarkable` has been renamed `remarkable`
+*	Fixed `base_path` default?
+
 v5	07.DEC.12
-*	Superscript can now be done without a preceeding word, e.g. `^TM`
+*	Superscript can now be done without a preceding word, e.g. `^TM`
 *	Reformatted the project structure
 	-	Moved "change.log" to HISTORY.txt
 	-	Added LICENCE.txt and licence headers
-	-	Added breif README.txt
+	-	Added brief README.txt
 	-	Removed the testing and build script (will replace in the future)
 	-	Moved to simpler versioning akin to NoNonsense Forum
 	

@@ -6,7 +6,7 @@
 </div>
 
 What ReMarkable Is
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable is a set of text conventions for writing article content in plain text that is translated into the corresponding HTML by the ReMarkable script.
 
 ReMarkable is based on the design of <Markdown (//daringfireball.net/projects/markdown/)> by John Gruber.
@@ -18,7 +18,7 @@ Use ReMarkable to write online blog / news articles using just plain text, eithe
 
 
 What ReMarkable Isn’t
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable should _*never*_ be used to provide a means of public / anonymous users to make comments, or submit any content on a website. ReMarkable is designed for trusted authors who wish to cut down the amount of HTML they have to write so that they may concentrate on their text more, it is _*not*_ designed to solve any trust problems. It is easy to insert JavaScript and other potential security threats into the HTML ReMarkable outputs.
 
 If you want to use ReMarkable in a public or untrusted context, it is up to you to securely filter the output of ReMarkable and to do the necessary security testing yourself. I will not take any responsibility for security breaches or damages caused by use of ReMarkable.
@@ -27,7 +27,7 @@ ReMarkable is not for sloppy coders. It outputs only clean, semantic HTML5. You 
 
 
 Using ReMarkable
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable is a PHP function. To use it, first copy the `ReMarkable` folder to your web app and include the file in your
 code, then call ``reMarkable``, passing the desired text to be transformed into HTML.
 
@@ -42,7 +42,7 @@ I’m <em>emphasising</em> this point <strong>strongly</strong>.
 <~~~
 
 Optional Parameters:
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable accepts 4 optional parameters in the format of:
 
 ~~~>
@@ -175,7 +175,7 @@ The following options are available: _
 
 
 Using ReMarkable From the Command Line:
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable can also be called from the command line so that you may use it from other scripting languages or as part of a batch process.
 
 To call ReMarkable, pass PHP the location of the ‘remarkable.php’ file, the optional parameters (if required) and pipe/direct the source text in through `stdin`.
@@ -212,7 +212,7 @@ Obviously, be aware of the need to properly escape such inline text.
 
 
 1.	Paragraphs (#p)
-============================================================================================================================
+================================================================================
 Every blank line is the start of a new paragraph.
 
 ~~~>
@@ -232,7 +232,7 @@ Which would be converted into the following HTML:
 <~~~
 
 1.1	Line Breaks (#br)
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 As per HTML rules, single line-breaks and other whitespace is ignored. _
 For example, this:
 
@@ -258,9 +258,9 @@ These kinds of break do not have to be at the end of a line, and you can use mor
 
 
 2.	Headings (#h)
-============================================================================================================================
+================================================================================
 2.1	Headings 1 to 6 (#h-atx)
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 There are two ways to do headings. _
 The first is atx style:
 
@@ -286,7 +286,7 @@ Becomes:
 <~~~
 
 2.2	Alternative Headings 2 and 3 (#h-settext)
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 The second way is using a line of equals or dashes. _
 For example:
 
@@ -325,7 +325,7 @@ usually only used once per article as the title for that article, and in many ca
 database field and isn’t included in the article text for processing.
 
 2.3	Automatic Title Case (#h-case)
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 All headings will be automatically <Title Cased (//en.wikipedia.org/wiki/Title_case)> by ReMarkable. _
 For example:
 
@@ -343,7 +343,7 @@ To avoid this behaviour, write a heading using HTML instead of ReMarkable syntax
 The PHP code for title casing is also available separately <here (//camendesign.com/code/title-case)>.
 
 2.4	Automatic Table of Contents (#h-toc)
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ReMarkable can create a table of contents for you. In order to do this, you need to include an ID on each heading you want to be in the table. A special “{TOC|Table of Contents}” marker in the text indicates where the table of contents will be placed. For example:
 
 ~~~>
@@ -394,7 +394,7 @@ There are two other things to note about the automatic table of contents.
 
 
 3.	Horizontal Rule / Thematic Break (#hr)
-============================================================================================================================
+================================================================================
 An ``<hr />`` element can be inserted using three asterisks separated by spaces, on a line. _
 There can be any amount of white space (or none) before the asterisks, but none after.
 
