@@ -275,15 +275,15 @@ function remarkable (
                 //----------------------------------------------------------------------------------
                 // get the image size for width / height attributes on the img tag
                 $info = getimagesize ("{$base_path}{$m[3][0]}");
-                $link = $mimes[pathinfo ($m[4][0], PATHINFO_EXTENSION)] ?? '';
+                $link = $mimes[pathinfo (@$m[4][0], PATHINFO_EXTENSION)] ?? '';
                 // swap in the HTML
                 $source_text = substr_replace ($source_text,
                     // if a thumbmail, include the link
-                    (strlen($m[4][0]) ? "<a href=\"{$m[4][0]}\"".($link ? " type=\"$link\"" : '').'>' : '').
+                    (strlen(@$m[4][0]) ? "<a href=\"{$m[4][0]}\"".($link ? " type=\"$link\"" : '').'>' : '').
                     // construct the image tag
                     "<img src=\"{$m[3][0]}\" alt={$m[1][0]}".(@$m[5][0] ? " title={$m[5][0]}" : '')
                     .(isset ($info[0]) ? " width=\"{$info[0]}\" height=\"{$info[1]}\"" : '')."$x>"
-                    .(strlen($m[4][0]) ? '</a>' : ''),
+                    .(strlen(@$m[4][0]) ? '</a>' : ''),
                     // replacement start and length
                     $m[0][1], strlen ($m[0][0])
                 );
@@ -462,7 +462,7 @@ function remarkable (
         //     Use {RAID} for redundancy.   (without title)
         //
         '/\{([^|}]+)(?:\|([^}]+))?\}/' => function($m){
-            return "<abbr".($m[2] ? " title=\"{$m[2]}\"" : '').">{$m[1]}</abbr>";
+            return "<abbr".(@$m[2] ? " title=\"{$m[2]}\"" : '').">{$m[1]}</abbr>";
         },
         
     ), $source_text);
@@ -594,9 +594,9 @@ function remarkable (
         "/(?:(?<=(?<!<[uo]l>)(\\n\\n)))?^{$bullet}((?:\\t+.*(\\n))+|(?:\\t+.*(?:\\n|(\\n\\n)))+)(?={$bullet}|\\n<\/[uo]l>)/mu" => function($m){
             return 
                 '<li'.(isset($m[3]) ? " id=\"{$m[3]}\"" : '').'>'
-                .$m[1].$m[5].$m[6]
+                .$m[1].$m[5].@$m[6]
                 .preg_replace("/^\\t/m", '', trim($m[4]))
-                .$m[1].$m[5].$m[6]
+                .$m[1].$m[5].@$m[6]
                 ."</li>\n\n";
         },
 
@@ -617,7 +617,7 @@ function remarkable (
             return
                 '<dt'.(isset($m[1]) ? " id=\"{$m[1]}\"" : '').">{$m[2]}</dt>\n\n"
                 .(isset($m[3])
-                    ?   "<dd>\n{$m[4]}".preg_replace("/^\\t/m", '', $m[3])."{$m[4]}\n</dd>\n\n"
+                    ?   "<dd>\n".@$m[4].preg_replace("/^\\t/m", '', $m[3]).@$m[4]."\n</dd>\n\n"
                     :   ''
                 );
         },
@@ -696,7 +696,7 @@ function remarkable (
         // the “li”, “dd” and not-“p” conditions contain a paragraph of text that has to be
         // word-wrapped. this text is stored in the regex named capture group “p” -> `$m['p']`.
         // if no match is made `(!$m)` then the whole chunk is a paragraph to be wrapped
-        $p = rtrim (empty($m) ? $chunk : (string) $m['p']);
+        $p = rtrim (empty($m) ? $chunk : (string) @$m['p']);
         
         // as explained above, word-wrap these conditions:
         if (($tag == 'li' || $tag == 'dd' || !$m) && $margin>0) {
