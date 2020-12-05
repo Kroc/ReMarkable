@@ -620,7 +620,7 @@ function remarkable (
         //
         "/(?:(?<=(?<!<[uo]l>)(\\n\\n)))?^{$bullet}((?:\\t+.*(\\n))+|(?:\\t+.*(?:\\n|(\\n\\n)))+)(?={$bullet}|\\n<\/[uo]l>)/mu" => function($m){
             return 
-                '<li'.(isset($m[3]) ? " id=\"{$m[3]}\"" : '').'>'
+                '<li'.(strlen($m[3]) ? " id=\"{$m[3]}\"" : '').'>'
                 .$m[1].$m[5].@$m[6]
                 .preg_replace("/^\\t/m", '', trim($m[4]))
                 .$m[1].$m[5].@$m[6]
@@ -642,7 +642,7 @@ function remarkable (
         //
         '/^:: (?:\(#([0-9a-z_-]+)\))?(.*)\n{0,2}((?:\t+.*\n)+|(?:\t+.*(?:\n|(\n)\n)?)+)?\n(?=\n::|<\/dl>)/m' => function($m){
             return
-                '<dt'.(isset($m[1]) ? " id=\"{$m[1]}\"" : '').">{$m[2]}</dt>\n\n"
+                '<dt'.(strlen($m[1]) ? " id=\"{$m[1]}\"" : '').">{$m[2]}</dt>\n\n"
                 .(isset($m[3])
                     ?   "<dd>\n".@$m[4].preg_replace("/^\\t/m", '', $m[3]).@$m[4]."\n</dd>\n\n"
                     :   ''
